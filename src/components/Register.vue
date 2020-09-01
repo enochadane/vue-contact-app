@@ -21,21 +21,6 @@
                 flat
               >
                 <v-toolbar-title>Register</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      :href="source"
-                      icon
-                      large
-                      target="_blank"
-                      v-on="on"
-                    >
-                      <v-icon>mdi-code-tags</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Source</span>
-                </v-tooltip>
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -75,11 +60,17 @@
                   ></v-text-field>
                 </v-form>
               </v-card-text>
+              <v-btn
+                text
+                @click="goToLogin"
+              >
+                Login
+              </v-btn>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
                   color="primary"
-                  @click="Register">Sign up</v-btn>
+                  @click="Register">Register</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -110,11 +101,15 @@
       Register(e) {
         e.preventDefault();
         this.$http.post('/user/signup', {
+          name: this.name,
           email: this.email,
           password: this.password
         })
         .then(res => console.log(res))
         .catch(err => console.log(err));
+      },
+      goToLogin() {
+        this.$router.push('/');
       }
     }
   }

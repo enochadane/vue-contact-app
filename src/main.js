@@ -3,6 +3,12 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
 import axios from 'axios'
+import EditDialog from './components/EditContact'
+import DeleteDialog from './components/DeleteContact'
+
+Vue.component('delete-dialog', DeleteDialog)
+Vue.component('edit-dialog', EditDialog)
+
 
 const base = axios.create({
   baseURL: 'http://localhost:3000'

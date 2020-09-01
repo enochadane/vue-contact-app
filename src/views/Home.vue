@@ -7,6 +7,11 @@
     >
       <v-list dense>
         <v-list-item-title>
+          {{ user.name }}
+        </v-list-item-title>
+      </v-list>
+      <v-list dense>
+        <v-list-item-title>
           {{ user.email }}
         </v-list-item-title>
       </v-list>
@@ -32,28 +37,14 @@
         prepend-inner-icon="mdi-magnify"
         label="Search"
         class="hidden-sm-and-down"
+        v-model="search"
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-btn 
-        @click="logOut"
-        color="blue darken-3">
+        text
+        @click="logOut">
+          <v-icon> mdi-logout </v-icon>
           <span>Log Out</span>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        large
-      >
-        <v-avatar
-          size="32px"
-          item
-        >
-          <v-img
-            src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-            alt="Vuetify"
-          ></v-img></v-avatar>
       </v-btn>
     </v-app-bar>
     <v-main>
@@ -66,7 +57,7 @@
           justify="center"
         >
           <add-contact @add-contact="addContact"/>
-          <contacts :contacts="contacts"/>
+          <contacts :filteredContacts="filteredContacts"/>
         </v-row>
       </v-container>
     </v-main>  
@@ -91,8 +82,16 @@ import VueJwtDecode from 'vue-jwt-decode'
       items: [],
       contacts: [],
       token: '',
-      user: {}
+      user: {},
+      search: ''
     }),
+    computed: {
+      filteredContacts: function() {
+        return this.contacts.filter((contact) => {
+          return contact.fullName.match(this.search);
+        });
+      }
+    },
     methods: {
       getUserDetails() {
         this.token = localStorage.getItem('jwt');
@@ -100,7 +99,6 @@ import VueJwtDecode from 'vue-jwt-decode'
         this.user = decoded;
       },
       addContact(newContact) {
-        console.log(newContact);
         const {
           profilePicture, 
           fullName,
@@ -119,11 +117,12 @@ import VueJwtDecode from 'vue-jwt-decode'
         formData.append('email', email);
         formData.append('phone', phone);
         formData.append('notes', notes);
-        
+        formData.append('creatorId', this.user._id);
+
         this.$http.post('/contacts', 
           formData, {
           headers: {
-            'Authorization': `Basic ${this.token}`
+            'Authorization': `Bearer ${this.token}`
           }
         })
         .then(res => this.contacts = [...this.contacts, res.data.data])
@@ -143,10 +142,15 @@ import VueJwtDecode from 'vue-jwt-decode'
           'Authorization': `Bearer ${this.token}`
         }
       })
-      .then(res => this.contacts = res.data.data)
+      .then(res => {
+          for(var contact in res.data.data) {
+            if (res.data.data[contact].creatorId === this.user._id) {
+              this.contacts = [...this.contacts, res.data.data[contact]]
+            }
+          }
+      })
       .catch(err => console.log(err));
 
-      // console.log(this.token);
     }
   }
 </script>

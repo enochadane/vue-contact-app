@@ -20,8 +20,8 @@
           Create contact
         </v-card-title>
         <v-container>
-          <v-row class="mx-2">
-            <v-col>
+          <v-row class="mx-2 text-center">
+            <v-col cols="12" v-if="imageSelected">
               <v-col
                 class=""
               >
@@ -31,8 +31,28 @@
                 >
                   <img
                     :src="imageUrl"
+                    alt=""
                     @click="onImagePick"
                   >
+                </v-avatar>
+              </v-col>
+            </v-col>
+            <v-col cols="12" v-else>
+              <v-col
+                class=""
+              >
+                <v-avatar
+                  size="100px"
+                  class="mx-3"
+                >
+                  <v-btn
+                    icon
+                    @click="onImagePick"
+                  >
+                    <v-icon size="100px">
+                      mdi-camera
+                    </v-icon>
+                  </v-btn>
                 </v-avatar>
               </v-col>
             </v-col>
@@ -128,6 +148,7 @@ export default {
   name: 'AddContact',
   data() {
     return {
+      imageSelected: false,
       dialog: false,
       imageUrl: '',
       profilePicture: '',
@@ -154,8 +175,12 @@ export default {
       }
       this.$emit('add-contact', newContact);
 
-      // this.fullName = '';
-      // this.email = '';
+      this.fullName = '';
+      this.email = '';
+      this.company = '';
+      this.jobTitle = '';
+      this.phone = '';
+      this.notes = '';
     },
     onImagePick() {
       this.$refs.profilePicture.click()
@@ -169,7 +194,9 @@ export default {
       })
       fileReader.readAsDataURL(files[0])
       this.profilePicture = files[0]
-      // console.log(this.profilePicture)
+      console.log(this.profilePicture)
+
+      this.imageSelected = true
     }
   }
 }

@@ -2,8 +2,8 @@
     <div>
         <v-card
             style="margin: 10px"
-            width="1000"
-            height="100"
+            min-width="500vw"
+            min-height="100vh"
             :to="{ name: 'Details', params: { id } }"
             color="silver"
         >

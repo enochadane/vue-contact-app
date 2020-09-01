@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 :key="contact.id" v-for="contact in contacts">
+        <h3 :key="contact.id" v-for="contact in filteredContacts">
             <contact :contact="contact"/>
         </h3>
     </div>
@@ -11,7 +11,7 @@ import Contact from './Contact'
 
 export default {
     name: 'Contacts',
-    props: ['contacts'],
+    props: ['filteredContacts'],
     components: {
         Contact
     }

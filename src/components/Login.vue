@@ -21,21 +21,6 @@
                 flat
               >
                 <v-toolbar-title>Contact app</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      :href="source"
-                      icon
-                      large
-                      target="_blank"
-                      v-on="on"
-                    >
-                      <v-icon>mdi-code-tags</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Source</span>
-                </v-tooltip>
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -57,6 +42,12 @@
                   ></v-text-field>
                 </v-form>
               </v-card-text>
+              <v-btn
+                text
+                @click="goToRegister"
+              >
+                register
+              </v-btn>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn 
@@ -100,6 +91,9 @@
           }
         })
         .catch(err => console.log(err));
+      },
+      goToRegister() {
+        this.$router.push('/register');
       }
     }
 
