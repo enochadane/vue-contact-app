@@ -11,7 +11,7 @@ Vue.component('edit-dialog', EditDialog)
 
 
 const base = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'https://yene-contacts.herokuapp.com/'
 })
 
 Vue.prototype.$http = base

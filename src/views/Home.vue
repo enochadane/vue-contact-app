@@ -36,7 +36,6 @@
         hide-details
         prepend-inner-icon="mdi-magnify"
         label="Search"
-        class="hidden-sm-and-down"
         v-model="search"
       ></v-text-field>
       <v-spacer></v-spacer>
@@ -57,7 +56,7 @@
           justify="center"
         >
           <add-contact @add-contact="addContact"/>
-          <contacts :filteredContacts="filteredContacts"/>
+          <contacts :contacts="filteredContacts"/>
         </v-row>
       </v-container>
     </v-main>  
@@ -88,7 +87,7 @@ import VueJwtDecode from 'vue-jwt-decode'
     computed: {
       filteredContacts: function() {
         return this.contacts.filter((contact) => {
-          return contact.fullName.match(this.search);
+          return contact.fullName.toLowerCase().match(this.search.toLowerCase());
         });
       }
     },
